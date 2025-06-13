@@ -1,103 +1,106 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import StepBlock from './components/StepBlock';
+import './globals.css';
+
+const steps = [
+  { icon: 'Page-1.svg', title: "Le rêve libère l’expression" },
+  { icon: 'Page-2.svg', title: 'Le sens éclaire le parcours' },
+  { icon: 'Page-3.svg', title: 'La différence rend unique' },
+  { icon: 'Page-4.svg', title: 'La valeur humaine met en mouvement' },
+  { icon: 'Page-5.svg', title: 'La clé exprime le style' },
+  { icon: 'Page-6.svg', title: 'Le parcours associe rêve et réalité' },
+  { icon: 'Page-7.svg', title: 'Le ciel bleu révèle l’alignement' },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [name, setName] = useState('');
+  const [intent, setIntent] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleClick = async () => {
+    const res = await fetch('https://api.db-ip.com/v2/free/self');
+    const data = await res.json();
+    const ip = data.ipAddress;
+    const sum = ip.split('.').reduce((acc, cur) => acc + parseInt(cur), 0);
+    alert(sum > 100 ? 'OK' : 'KO');
+  };
+
+  const isValid = name.trim() !== '' && intent.trim() !== '';
+
+  return (
+    <main className="flex flex-col md:flex-row min-h-screen">
+      <section className="md:w-1/2 bg-[#7AA8AC] text-white p-10 z-10 relative flex flex-col justify-center space-y-6">
+        <img src="/icons/logo.png" alt="logo" className="w-44 mb-15" />
+
+        <div className="space-y-4">
+          <h1 className="text-2xl font-bold">Pour commencer…</h1>
+          <p>
+            Faire votre Shynleï, jouer avec, c’est l’occasion d’écouter vos rêves,
+            de les partager et de prendre confiance dans votre richesse.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        <div className="space-y-6 mt-8">
+            <div>
+                <label className="block mb-1">Nom et prénom :</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-transparent border-b border-white focus:outline-none"
+                  placeholder="Votre nom"
+                />
+            </div>
+
+            <div>
+              <label className="block mb-1">Mon intention :</label>
+              <input
+                type="text"
+                value={intent}
+                onChange={(e) => setIntent(e.target.value)}
+                className="w-full bg-transparent border-b border-white focus:outline-none"
+                placeholder="L’intention, l’objectif de ce Shynleï"
+              />
+            </div>
+        </div>
+      </section>
+
+
+      <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 z-0 w-[100px]">
+        <svg
+          viewBox="0 0 100 1000"
+          preserveAspectRatio="none"
+          className="w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <path d="M100,0 C40,250 40,750 100,1000 L0,1000 L0,0 Z" fill="#7AA8AC" />
+        </svg>
+      </div>
+
+
+
+      <section className="md:w-1/2 bg-white p-10">
+        <h2 className="text-xl font-bold mb-4">Votre Shynleï c’est..</h2>
+        <p className="mb-6">
+          7 étapes, 2 fiches pour prendre note des rencontres, 1 page pour éclairer le sens,
+          3 interprétations pour vous aider..
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          {steps.map((step, i) => (
+            <StepBlock key={i} icon={step.icon} title={step.title} index={i + 1} />
+          ))}
+        </div>
+        <button
+          onClick={handleClick}
+          disabled={!isValid}
+          className={`px-6 py-2 text-white rounded-md transition ${
+            isValid ? 'bg-[#7AA8AC] hover:bg-[#619197]' : 'bg-gray-400 cursor-not-allowed'
+          }`}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          EXPRIMER MES RÊVES &gt;
+        </button>
+      </section>
+    </main>
   );
 }
